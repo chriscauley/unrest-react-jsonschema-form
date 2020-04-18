@@ -1,0 +1,163 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactJsonschemaForm = _interopRequireDefault(require("react-jsonschema-form"));
+
+var _classnames = _interopRequireDefault(require("classnames"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var noop = function noop(formData) {
+  return formData;
+};
+
+var uiSchema = {};
+
+var Form = /*#__PURE__*/function (_React$Component) {
+  _inherits(Form, _React$Component);
+
+  var _super = _createSuper(Form);
+
+  function Form() {
+    var _this;
+
+    _classCallCheck(this, Form);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _super.call.apply(_super, [this].concat(args));
+
+    _defineProperty(_assertThisInitialized(_this), "state", {});
+
+    _defineProperty(_assertThisInitialized(_this), "onSubmit", function (_ref) {
+      var formData = _ref.formData;
+      var _this$props = _this.props,
+          _this$props$prepData = _this$props.prepData,
+          prepData = _this$props$prepData === void 0 ? noop : _this$props$prepData,
+          _this$props$onSubmit = _this$props.onSubmit,
+          onSubmit = _this$props$onSubmit === void 0 ? noop : _this$props$onSubmit,
+          _this$props$onSuccess = _this$props.onSuccess,
+          onSuccess = _this$props$onSuccess === void 0 ? noop : _this$props$onSuccess;
+
+      try {
+        formData = prepData(formData);
+        Promise.resolve(onSubmit(formData)).then(onSuccess)["catch"](_this.setError);
+      } catch (error) {
+        _this.setError(error);
+      }
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "setError", function (error) {
+      _this.setState({
+        error: error || 'An unknown error has occurred',
+        loading: false
+      });
+
+      throw error;
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "isValid", function () {
+      if (_this.props.error || _this.state.error) {
+        return false;
+      }
+
+      var required = _this.props.schema.required || [];
+      var _this$state$formData = _this.state.formData,
+          formData = _this$state$formData === void 0 ? {} : _this$state$formData;
+      return !required.find(function (fieldName) {
+        return !formData[fieldName];
+      });
+    });
+
+    return _this;
+  }
+
+  _createClass(Form, [{
+    key: "render",
+    value: function render() {
+      var _this$props2 = this.props,
+          after = _this$props2.after,
+          cancel = _this$props2.cancel,
+          _this$props2$cancelTe = _this$props2.cancelText,
+          cancelText = _this$props2$cancelTe === void 0 ? 'Cancel' : _this$props2$cancelTe,
+          children = _this$props2.children,
+          customButton = _this$props2.customButton,
+          className = _this$props2.className,
+          initial = _this$props2.initial,
+          schema = _this$props2.schema,
+          _this$props2$submitTe = _this$props2.submitText,
+          submitText = _this$props2$submitTe === void 0 ? 'Submit' : _this$props2$submitTe,
+          success = _this$props2.success,
+          title = _this$props2.title,
+          _this$props2$css = _this$props2.css,
+          css = _this$props2$css === void 0 ? {} : _this$props2$css;
+      css.button = css.button || {};
+      css.alert = css.alert || {};
+      var error = this.state.error || this.props.error;
+      var loading = this.state.loading || this.props.loading;
+      return /*#__PURE__*/_react["default"].createElement("div", {
+        className: (0, _classnames["default"])('rjsf', className, {
+          'loading-locked': loading
+        })
+      }, title && /*#__PURE__*/_react["default"].createElement("div", {
+        className: css.h2
+      }, title), /*#__PURE__*/_react["default"].createElement(_reactJsonschemaForm["default"], {
+        formData: this.state.formData || initial,
+        onSubmit: this.onSubmit,
+        schema: schema,
+        uiSchema: _objectSpread({}, uiSchema, {}, this.props.uiSchema)
+      }, children, error && /*#__PURE__*/_react["default"].createElement("div", {
+        className: css.alert.error
+      }, error), success && /*#__PURE__*/_react["default"].createElement("div", {
+        className: css.alerts.success
+      }, success), !customButton && /*#__PURE__*/_react["default"].createElement("div", {
+        className: "flex justify-end mb-8"
+      }, cancel && /*#__PURE__*/_react["default"].createElement("div", {
+        className: css.button.none,
+        onClick: cancel
+      }, cancelText), /*#__PURE__*/_react["default"].createElement("button", {
+        className: css.button[this.isValid() ? 'default' : 'disabled']
+      }, submitText)), after));
+    }
+  }]);
+
+  return Form;
+}(_react["default"].Component);
+
+exports["default"] = Form;
