@@ -82,7 +82,7 @@ test('Form.props.prepData throwing an error displays an error', () => {
   supressError(e)
   fireEvent.click(component.getByText('Submit'))
 
-  component.getByText(e)
+  expect(component.getByText(e).className).toEqual('alert alert-danger')
 })
 
 test('Form.props renders cancelText, submitText, title, and success', () => {
@@ -92,8 +92,8 @@ test('Form.props renders cancelText, submitText, title, and success', () => {
   const submitText = "Custom Submit"
   const component = renderForm({title, success, cancelText, submitText, cancel: () =>{}})
 
-  component.getByText("Custom Cancel")
-  component.getByText("Custom Submit")
+  expect(component.getByText(cancelText).className).toEqual('btn btn-danger')
+  expect(component.getByText(submitText).className).toEqual('btn btn-primary')
   expect(component.getByText(title).className).toEqual('h2')
   expect(component.getByText(success).className).toEqual('alert alert-success')
 })
