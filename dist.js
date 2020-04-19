@@ -11,6 +11,8 @@ var _reactJsonschemaForm = _interopRequireDefault(require("react-jsonschema-form
 
 var _classnames = _interopRequireDefault(require("classnames"));
 
+var _css = _interopRequireDefault(require("@unrest/css"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -45,7 +47,11 @@ var noop = function noop(formData) {
   return formData;
 };
 
-var uiSchema = {};
+var uiSchema = {
+  password: {
+    "ui:widget": "password"
+  }
+};
 
 var Form = /*#__PURE__*/function (_React$Component) {
   _inherits(Form, _React$Component);
@@ -124,11 +130,7 @@ var Form = /*#__PURE__*/function (_React$Component) {
           _this$props2$submitTe = _this$props2.submitText,
           submitText = _this$props2$submitTe === void 0 ? 'Submit' : _this$props2$submitTe,
           success = _this$props2.success,
-          title = _this$props2.title,
-          _this$props2$css = _this$props2.css,
-          css = _this$props2$css === void 0 ? {} : _this$props2$css;
-      css.button = css.button || {};
-      css.alert = css.alert || {};
+          title = _this$props2.title;
       var error = this.state.error || this.props.error;
       var loading = this.state.loading || this.props.loading;
       return /*#__PURE__*/_react["default"].createElement("div", {
@@ -136,23 +138,25 @@ var Form = /*#__PURE__*/function (_React$Component) {
           'loading-locked': loading
         })
       }, title && /*#__PURE__*/_react["default"].createElement("div", {
-        className: css.h2
+        className: _css["default"].h2()
       }, title), /*#__PURE__*/_react["default"].createElement(_reactJsonschemaForm["default"], {
         formData: this.state.formData || initial,
         onSubmit: this.onSubmit,
         schema: schema,
         uiSchema: _objectSpread({}, uiSchema, {}, this.props.uiSchema)
       }, children, error && /*#__PURE__*/_react["default"].createElement("div", {
-        className: css.alert.error
+        className: _css["default"].alert.error()
       }, error), success && /*#__PURE__*/_react["default"].createElement("div", {
-        className: css.alerts.success
+        className: _css["default"].alerts.success()
       }, success), !customButton && /*#__PURE__*/_react["default"].createElement("div", {
         className: "flex justify-end mb-8"
       }, cancel && /*#__PURE__*/_react["default"].createElement("div", {
-        className: css.button.none,
+        className: _css["default"].button.danger(),
         onClick: cancel
       }, cancelText), /*#__PURE__*/_react["default"].createElement("button", {
-        className: css.button[this.isValid() ? 'default' : 'disabled']
+        className: _css["default"].button({
+          'disabled': !this.isValid()
+        })
       }, submitText)), after));
     }
   }]);

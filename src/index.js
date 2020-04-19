@@ -1,9 +1,12 @@
 import React from 'react'
 import RJSForm from 'react-jsonschema-form'
 import classnames from 'classnames'
+import css from '@unrest/css'
 
 const noop = (formData) => formData
-const uiSchema = {}
+const uiSchema = {
+  password: {"ui:widget": "password" },
+}
 
 export default class Form extends React.Component {
   state = {}
@@ -47,17 +50,14 @@ export default class Form extends React.Component {
       submitText = 'Submit',
       success,
       title,
-      css={},
     } = this.props
-    css.button = css.button || {}
-    css.alert = css.alert || {}
     const error = this.state.error || this.props.error
     const loading = this.state.loading || this.props.loading
     return (
       <div
         className={classnames('rjsf', className, { 'loading-locked': loading })}
       >
-        {title && <div className={css.h2}>{title}</div>}
+        {title && <div className={css.h2()}>{title}</div>}
         <RJSForm
           formData={this.state.formData || initial}
           onSubmit={this.onSubmit}
@@ -68,16 +68,16 @@ export default class Form extends React.Component {
           }}
         >
           {children}
-          {error && <div className={css.alert.error}>{error}</div>}
-          {success && <div className={css.alerts.success}>{success}</div>}
+          {error && <div className={css.alert.error()}>{error}</div>}
+          {success && <div className={css.alerts.success()}>{success}</div>}
           {!customButton && (
             <div className="flex justify-end mb-8">
               {cancel && (
-                <div className={css.button.none} onClick={cancel}>
+                <div className={css.button.danger()} onClick={cancel}>
                   {cancelText}
                 </div>
               )}
-              <button className={css.button[this.isValid() ? 'default' : 'disabled']}>
+              <button className={css.button({ 'disabled': !this.isValid() })}>
                 {submitText}
               </button>
             </div>
