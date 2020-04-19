@@ -5,7 +5,7 @@ import css from '@unrest/css'
 
 const noop = (formData) => formData
 const uiSchema = {
-  password: {"ui:widget": "password" },
+  password: { 'ui:widget': 'password' },
 }
 
 export default class Form extends React.Component {
@@ -18,11 +18,11 @@ export default class Form extends React.Component {
     })
   }
 
-  catchError = func => {
+  catchError = (func) => {
     try {
       func()
     } catch (error) {
-      this.setState({ error, loading: false, })
+      this.setState({ error, loading: false })
     }
   }
 
@@ -31,12 +31,12 @@ export default class Form extends React.Component {
       return false
     }
     const required = this.props.schema.required || []
-    const { formData={} } = this.state
+    const { formData = {} } = this.state
     return !required.find((fieldName) => !formData[fieldName])
   }
 
   onChange = ({ formData }) => {
-    const { onChange=noop } = this.props
+    const { onChange = noop } = this.props
     this.catchError(() => {
       onChange(formData) // mutates formData or throws error
       this.setState({ formData })
@@ -84,7 +84,7 @@ export default class Form extends React.Component {
                   {cancelText}
                 </div>
               )}
-              <button className={css.button({ 'disabled': !this.isValid() })}>
+              <button className={css.button({ disabled: !this.isValid() })}>
                 {submitText}
               </button>
             </div>

@@ -8,6 +8,8 @@
   "license": "MIT",
   "scripts": {
     "build": "babel src/index.js -o dist.js",
+    "lint": "yarn eslint __tests__/ src/",
+    "test": "yarn jest",
     "develop": "yarn parcel docs/index.html"
   },
   "peerDependencies": {
