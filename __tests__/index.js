@@ -38,34 +38,21 @@ test('Form noop', () => {
   const component = renderForm()
   fireEvent.click(component.getByText('Submit'))
   expect(component.queryByText(".name is a required property")).toBeFalsy()
+  expect(component.queryByText("Cancel")).toBeFalsy()
 })
 
-test('Form + required', () => {
+test('Form.props.required displays an error when submitted', () => {
   const component2 = renderForm({schema: {required: ['name']}})
-  supressError(() => fireEvent.click(component2.getByText('Submit')))
+  supressError("Form validation failed")
+  fireEvent.click(component2.getByText('Submit'))
   component2.getByText(".name is a required property")
 })
 
-test('form renders', () => {
-  const component = render(<Form schema={getSchema()} />)
-  component.getByText('name')
-  component.getByText('Submit')
-})
-
-test('form has cancel property', () => {
+test('Form.props.cancel attaches to cancel button', () => {
   const cancel = jest.fn()
   const component = renderForm({ cancel })
   fireEvent.click(component.getByText('Cancel'))
-
   expect(cancel).toBeCalled()
-})
-
-test('form allows custom cancel and submit text', () => {
-  const cancelText = "Custom Cancel"
-  const submitText = "Custom Submit"
-  const component = renderForm({ cancelText, submitText, cancel: () =>{}})
-  component.getByText("Custom Cancel")
-  component.getByText("Custom Submit")
 })
 
 test('form calls onSubmit, prepData, and onSuccess when submit button is clicked', done => {
@@ -92,20 +79,21 @@ test('Form.props.prepData throwing an error displays an error', () => {
   const e = "The system is down"
   const prepData = () => {throw e}
   const component = renderForm({ prepData })
-  supressError(() => fireEvent.click(component.getByText('Submit')), e)
+  supressError(e)
+  fireEvent.click(component.getByText('Submit'))
 
   component.getByText(e)
 })
 
-test('Form title', () => {
+test('Form.props renders cancelText, submitText, title, and success', () => {
   const title = "Foo"
-  const component = renderForm({title})
-  component.getByText(title)
-})
-
-test('Form success', () => {
   const success = "Saving form was successful"
-  const component = renderForm({success})
-  component.getByText(success)
-})
+  const cancelText = "Custom Cancel"
+  const submitText = "Custom Submit"
+  const component = renderForm({title, success, cancelText, submitText, cancel: () =>{}})
 
+  component.getByText("Custom Cancel")
+  component.getByText("Custom Submit")
+  expect(component.getByText(title).className).toEqual('h2')
+  expect(component.getByText(success).className).toEqual('alert alert-success')
+})
