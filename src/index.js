@@ -13,7 +13,7 @@ export default class Form extends React.Component {
   onSubmit = ({ formData }) => {
     const { prepData = noop, onSubmit = noop, onSuccess = noop } = this.props
     this.catchError(() => {
-      formData = prepData(formData)
+      prepData(formData) // mutates formData or throws error
       Promise.resolve(onSubmit(formData)).then(onSuccess).catch(this.setError)
     })
   }
@@ -35,10 +35,10 @@ export default class Form extends React.Component {
     return !required.find((fieldName) => !formData[fieldName])
   }
 
-  onChange = ({ formData, ...rest}) => {
+  onChange = ({ formData }) => {
     const { onChange=noop } = this.props
     this.catchError(() => {
-      formData = onChange(formData)
+      onChange(formData) // mutates formData or throws error
       this.setState({ formData })
     })
   }

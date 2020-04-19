@@ -81,21 +81,22 @@ var Form = /*#__PURE__*/function (_React$Component) {
           _this$props$onSuccess = _this$props.onSuccess,
           onSuccess = _this$props$onSuccess === void 0 ? noop : _this$props$onSuccess;
 
-      try {
-        formData = prepData(formData);
+      _this.catchError(function () {
+        prepData(formData); // mutates formData or throws error
+
         Promise.resolve(onSubmit(formData)).then(onSuccess)["catch"](_this.setError);
-      } catch (error) {
-        _this.setError(error);
-      }
+      });
     });
 
-    _defineProperty(_assertThisInitialized(_this), "setError", function (error) {
-      _this.setState({
-        error: error || 'An unknown error has occurred',
-        loading: false
-      });
-
-      throw error;
+    _defineProperty(_assertThisInitialized(_this), "catchError", function (func) {
+      try {
+        func();
+      } catch (error) {
+        _this.setState({
+          error: error,
+          loading: false
+        });
+      }
     });
 
     _defineProperty(_assertThisInitialized(_this), "isValid", function () {
@@ -108,6 +109,20 @@ var Form = /*#__PURE__*/function (_React$Component) {
           formData = _this$state$formData === void 0 ? {} : _this$state$formData;
       return !required.find(function (fieldName) {
         return !formData[fieldName];
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "onChange", function (_ref2) {
+      var formData = _ref2.formData;
+      var _this$props$onChange = _this.props.onChange,
+          onChange = _this$props$onChange === void 0 ? noop : _this$props$onChange;
+
+      _this.catchError(function () {
+        onChange(formData); // mutates formData or throws error
+
+        _this.setState({
+          formData: formData
+        });
       });
     });
 
@@ -142,13 +157,13 @@ var Form = /*#__PURE__*/function (_React$Component) {
       }, title), /*#__PURE__*/_react["default"].createElement(_reactJsonschemaForm["default"], {
         formData: this.props.formData || this.state.formData || initial,
         onSubmit: this.onSubmit,
-        onChange: this.props.onChange,
+        onChange: this.onChange,
         schema: schema,
         uiSchema: _objectSpread({}, uiSchema, {}, this.props.uiSchema)
       }, children, error && /*#__PURE__*/_react["default"].createElement("div", {
-        className: _css["default"].alert.error()
+        className: _css["default"].alert.danger()
       }, error), success && /*#__PURE__*/_react["default"].createElement("div", {
-        className: _css["default"].alerts.success()
+        className: _css["default"].alert.success()
       }, success), !customButton && /*#__PURE__*/_react["default"].createElement("div", {
         className: "flex justify-end mb-8"
       }, cancel && /*#__PURE__*/_react["default"].createElement("div", {
