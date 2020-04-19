@@ -3,22 +3,23 @@ import {render, fireEvent, screen} from '@testing-library/react'
 
 import Form from '../src'
 
-const _warn = console.warn
-console.warn = (warning) => {
-  if (typeof warning === 'string' && warning.includes("componentWillReceiveProps has been renamed")) {
-    return
-  }
-  _warn(warning)
-}
-
-const supressError = (func, expected) => {
-  const og = console.error
+const og_warn = console.warn
+const og_error = console.error
+const supressError = expected => {
   console.error = jest.fn(
     actual => expected && expect(actual).toBe(expected)
   )
-  func()
-  console.error = og
 }
+beforeAll(() => {
+  console.warn = (warning) => {
+    if (typeof warning === 'string' && warning.includes("componentWillReceiveProps has been renamed")) {
+      return
+    }
+    _warn(warning)
+  }
+})
+
+afterAll(() => { console.error = og_error })
 
 const getSchema = schema => ({
   type: 'object',
@@ -34,7 +35,7 @@ const renderForm = (args={}) => {
 }
 
 test('Form noop', () => {
-  const component = renderForm({title:'noop'})
+  const component = renderForm()
   fireEvent.click(component.getByText('Submit'))
   expect(component.queryByText(".name is a required property")).toBeFalsy()
 })
