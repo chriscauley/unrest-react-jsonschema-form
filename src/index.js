@@ -12,20 +12,18 @@ export default class Form extends React.Component {
   state = {}
   onSubmit = ({ formData }) => {
     const { prepData = noop, onSubmit = noop, onSuccess = noop } = this.props
-    try {
+    this.catchError(() => {
       formData = prepData(formData)
       Promise.resolve(onSubmit(formData)).then(onSuccess).catch(this.setError)
-    } catch (error) {
-      this.setError(error)
-    }
+    })
   }
 
-  setError = (error) => {
-    this.setState({
-      error: error || 'An unknown error has occurred',
-      loading: false,
-    })
-    throw error
+  catchError = func => {
+    try {
+      func()
+    } catch (error) {
+      this.setState({ error, loading: false, })
+    }
   }
 
   isValid = () => {
@@ -35,6 +33,14 @@ export default class Form extends React.Component {
     const required = this.props.schema.required || []
     const { formData={} } = this.state
     return !required.find((fieldName) => !formData[fieldName])
+  }
+
+  onChange = ({ formData, ...rest}) => {
+    const { onChange=noop } = this.props
+    this.catchError(() => {
+      formData = onChange(formData)
+      this.setState({ formData })
+    })
   }
 
   render() {
@@ -59,8 +65,9 @@ export default class Form extends React.Component {
       >
         {title && <div className={css.h2()}>{title}</div>}
         <RJSForm
-          formData={this.state.formData || initial}
+          formData={this.props.formData || this.state.formData || initial}
           onSubmit={this.onSubmit}
+          onChange={this.onChange}
           schema={schema}
           uiSchema={{
             ...uiSchema,
@@ -68,8 +75,8 @@ export default class Form extends React.Component {
           }}
         >
           {children}
-          {error && <div className={css.alert.error()}>{error}</div>}
-          {success && <div className={css.alerts.success()}>{success}</div>}
+          {error && <div className={css.alert.danger()}>{error}</div>}
+          {success && <div className={css.alert.success()}>{success}</div>}
           {!customButton && (
             <div className="flex justify-end mb-8">
               {cancel && (

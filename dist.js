@@ -140,8 +140,9 @@ var Form = /*#__PURE__*/function (_React$Component) {
       }, title && /*#__PURE__*/_react["default"].createElement("div", {
         className: _css["default"].h2()
       }, title), /*#__PURE__*/_react["default"].createElement(_reactJsonschemaForm["default"], {
-        formData: this.state.formData || initial,
+        formData: this.props.formData || this.state.formData || initial,
         onSubmit: this.onSubmit,
+        onChange: this.props.onChange,
         schema: schema,
         uiSchema: _objectSpread({}, uiSchema, {}, this.props.uiSchema)
       }, children, error && /*#__PURE__*/_react["default"].createElement("div", {
