@@ -39,6 +39,9 @@ test('Form noop', () => {
   fireEvent.click(component.getByText('Submit'))
   expect(component.queryByText('.name is a required property')).toBeFalsy()
   expect(component.queryByText('Cancel')).toBeFalsy()
+  fireEvent.change(component.getByLabelText('name'), {
+    target: { value: 'james' },
+  })
 })
 
 test('Form.props.required displays an error when submitted', () => {
@@ -109,4 +112,46 @@ test('Form.props renders cancelText, submitText, title, and success', () => {
   expect(component.getByText(submitText).className).toEqual('btn btn-primary')
   expect(component.getByText(title).className).toEqual('h2')
   expect(component.getByText(success).className).toEqual('alert alert-success')
+})
+
+test('Form.state.loading blocks submit', (done) => {
+  let submitCount = 0
+  let finish
+  const resolveCurrent = (expectedCount) => {
+    expect(submitCount).toBe(expectedCount)
+    finish()
+  }
+  const onSubmit = () => {
+    submitCount++
+    return new Promise((reslove) => (finish = reslove))
+  }
+
+  // first submit calls onSubmit and sets button state to loading
+  const component = renderForm({ onSubmit })
+  fireEvent.click(component.getByText('Submit'))
+  expect(component.getByText('Submit').className).toBe(
+    'btn btn-primary loading',
+  )
+  expect(submitCount).toBe(1)
+
+  // need a new promise for every submit call
+  Promise.resolve()
+    .then(() => {
+      // a second submit does nothing because state.loading is true
+      fireEvent.click(component.getByText('Submit'))
+      resolveCurrent(1)
+    })
+    .then(() => {
+      // since finish was called, we can submit again
+      fireEvent.click(component.getByText('Submit'))
+      resolveCurrent(2)
+      done()
+    })
+})
+
+test('Form.props.loading blocks submit', () => {
+  const onSubmit = jest.fn()
+  const component = renderForm({ onSubmit, loading: true })
+  fireEvent.click(component.getByText('Submit'))
+  expect(onSubmit).toHaveBeenCalledTimes(0)
 })

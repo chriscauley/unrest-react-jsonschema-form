@@ -73,6 +73,11 @@ var Form = /*#__PURE__*/function (_React$Component) {
 
     _defineProperty(_assertThisInitialized(_this), "onSubmit", function (_ref) {
       var formData = _ref.formData;
+
+      if (_this.isLoading()) {
+        return;
+      }
+
       var _this$props = _this.props,
           _this$props$prepData = _this$props.prepData,
           prepData = _this$props$prepData === void 0 ? noop : _this$props$prepData,
@@ -84,7 +89,17 @@ var Form = /*#__PURE__*/function (_React$Component) {
       _this.catchError(function () {
         prepData(formData); // mutates formData or throws error
 
-        Promise.resolve(onSubmit(formData)).then(onSuccess)["catch"](_this.setError);
+        _this.setState({
+          loading: true
+        });
+
+        Promise.resolve(onSubmit(formData)).then(function (data) {
+          _this.setState({
+            loading: false
+          });
+
+          return onSuccess(data);
+        })["catch"](_this.setError);
       });
     });
 
@@ -115,6 +130,10 @@ var Form = /*#__PURE__*/function (_React$Component) {
       return !required.find(function (fieldName) {
         return isEmpty(formData[fieldName]);
       });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "isLoading", function () {
+      return _this.state.loading || _this.props.loading;
     });
 
     _defineProperty(_assertThisInitialized(_this), "getFormData", function () {
@@ -181,7 +200,8 @@ var Form = /*#__PURE__*/function (_React$Component) {
         onClick: cancel
       }, cancelText), /*#__PURE__*/_react["default"].createElement("button", {
         className: _css["default"].button({
-          disabled: !this.isValid()
+          disabled: !this.isValid(),
+          loading: this.isLoading()
         })
       }, submitText)), after));
     }
