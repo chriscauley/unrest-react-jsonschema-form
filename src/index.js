@@ -32,7 +32,8 @@ export default class Form extends React.Component {
     }
     const required = this.props.schema.required || []
     const formData = this.getFormData()
-    return !required.find((fieldName) => !formData[fieldName])
+    const isEmpty = value => !(value || value === 0)
+    return !required.find((fieldName) => isEmpty(formData[fieldName]))
   }
 
   getFormData = () => {
