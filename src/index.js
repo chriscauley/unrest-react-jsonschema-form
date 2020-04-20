@@ -81,7 +81,7 @@ export default class Form extends React.Component {
           }}
         >
           {children}
-          {error && <div className={css.alert.danger()}>{error}</div>}
+          {error && <div className={css.alert.danger()}>{error.message || error}</div>}
           {success && <div className={css.alert.success()}>{success}</div>}
           {!customButton && (
             <div className="flex justify-end mb-8">

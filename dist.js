@@ -101,7 +101,6 @@ var Form = /*#__PURE__*/function (_React$Component) {
 
     _defineProperty(_assertThisInitialized(_this), "isValid", function () {
       if (_this.props.error || _this.state.error) {
-        console.log('e', _this.props.error, _this.state.error);
         return false;
       }
 
@@ -109,14 +108,18 @@ var Form = /*#__PURE__*/function (_React$Component) {
 
       var formData = _this.getFormData();
 
+      var isEmpty = function isEmpty(value) {
+        return !(value || value === 0);
+      };
+
       return !required.find(function (fieldName) {
-        return !formData[fieldName];
+        return isEmpty(formData[fieldName]);
       });
     });
 
     _defineProperty(_assertThisInitialized(_this), "getFormData", function () {
       // formData is dictated by props for controlled form or state (via rjsf) for non-controlled form
-      return _this.props.formData || _this.state.formData || _this.props.initial;
+      return _this.props.formData || _this.state.formData || _this.props.initial || {};
     });
 
     _defineProperty(_assertThisInitialized(_this), "onChange", function (_ref2) {
@@ -169,7 +172,7 @@ var Form = /*#__PURE__*/function (_React$Component) {
         uiSchema: _objectSpread({}, uiSchema, {}, this.props.uiSchema)
       }, children, error && /*#__PURE__*/_react["default"].createElement("div", {
         className: _css["default"].alert.danger()
-      }, error), success && /*#__PURE__*/_react["default"].createElement("div", {
+      }, error.message || error), success && /*#__PURE__*/_react["default"].createElement("div", {
         className: _css["default"].alert.success()
       }, success), !customButton && /*#__PURE__*/_react["default"].createElement("div", {
         className: "flex justify-end mb-8"
