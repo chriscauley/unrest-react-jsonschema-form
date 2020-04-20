@@ -49,7 +49,7 @@ var noop = function noop(formData) {
 
 var uiSchema = {
   password: {
-    "ui:widget": "password"
+    'ui:widget': 'password'
   }
 };
 
@@ -101,15 +101,22 @@ var Form = /*#__PURE__*/function (_React$Component) {
 
     _defineProperty(_assertThisInitialized(_this), "isValid", function () {
       if (_this.props.error || _this.state.error) {
+        console.log('e', _this.props.error, _this.state.error);
         return false;
       }
 
       var required = _this.props.schema.required || [];
-      var _this$state$formData = _this.state.formData,
-          formData = _this$state$formData === void 0 ? {} : _this$state$formData;
+
+      var formData = _this.getFormData();
+
       return !required.find(function (fieldName) {
         return !formData[fieldName];
       });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "getFormData", function () {
+      // formData is dictated by props for controlled form or state (via rjsf) for non-controlled form
+      return _this.props.formData || _this.state.formData || _this.props.initial;
     });
 
     _defineProperty(_assertThisInitialized(_this), "onChange", function (_ref2) {
@@ -155,7 +162,7 @@ var Form = /*#__PURE__*/function (_React$Component) {
       }, title && /*#__PURE__*/_react["default"].createElement("div", {
         className: _css["default"].h2()
       }, title), /*#__PURE__*/_react["default"].createElement(_reactJsonschemaForm["default"], {
-        formData: this.props.formData || this.state.formData || initial,
+        formData: this.getFormData(),
         onSubmit: this.onSubmit,
         onChange: this.onChange,
         schema: schema,
@@ -171,7 +178,7 @@ var Form = /*#__PURE__*/function (_React$Component) {
         onClick: cancel
       }, cancelText), /*#__PURE__*/_react["default"].createElement("button", {
         className: _css["default"].button({
-          'disabled': !this.isValid()
+          disabled: !this.isValid()
         })
       }, submitText)), after));
     }

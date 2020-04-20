@@ -31,8 +31,13 @@ export default class Form extends React.Component {
       return false
     }
     const required = this.props.schema.required || []
-    const { formData = {} } = this.state
+    const formData = this.getFormData()
     return !required.find((fieldName) => !formData[fieldName])
+  }
+
+  getFormData = () => {
+    // formData is dictated by props for controlled form or state (via rjsf) for non-controlled form
+    return this.props.formData || this.state.formData || this.props.initial || {}
   }
 
   onChange = ({ formData }) => {
@@ -65,7 +70,7 @@ export default class Form extends React.Component {
       >
         {title && <div className={css.h2()}>{title}</div>}
         <RJSForm
-          formData={this.props.formData || this.state.formData || initial}
+          formData={this.getFormData()}
           onSubmit={this.onSubmit}
           onChange={this.onChange}
           schema={schema}
