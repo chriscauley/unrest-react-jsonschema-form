@@ -90,7 +90,8 @@ var Form = /*#__PURE__*/function (_React$Component) {
         prepData(formData); // mutates formData or throws error
 
         _this.setState({
-          loading: true
+          loading: true,
+          error: undefined
         });
 
         Promise.resolve(onSubmit(formData)).then(function (data) {
@@ -115,7 +116,7 @@ var Form = /*#__PURE__*/function (_React$Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "isValid", function () {
-      if (_this.props.error || _this.state.error) {
+      if (_this.props.error) {
         return false;
       }
 
@@ -169,17 +170,15 @@ var Form = /*#__PURE__*/function (_React$Component) {
           children = _this$props2.children,
           customButton = _this$props2.customButton,
           className = _this$props2.className,
-          initial = _this$props2.initial,
           schema = _this$props2.schema,
           _this$props2$submitTe = _this$props2.submitText,
           submitText = _this$props2$submitTe === void 0 ? 'Submit' : _this$props2$submitTe,
           success = _this$props2.success,
           title = _this$props2.title;
       var error = this.state.error || this.props.error;
-      var loading = this.state.loading || this.props.loading;
       return /*#__PURE__*/_react["default"].createElement("div", {
         className: (0, _classnames["default"])('rjsf', className, {
-          'loading-locked': loading
+          loading: this.isLoading()
         })
       }, title && /*#__PURE__*/_react["default"].createElement("div", {
         className: _css["default"].h2()

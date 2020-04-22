@@ -17,7 +17,7 @@ export default class Form extends React.Component {
     const { prepData = noop, onSubmit = noop, onSuccess = noop } = this.props
     this.catchError(() => {
       prepData(formData) // mutates formData or throws error
-      this.setState({ loading: true })
+      this.setState({ loading: true, error: undefined })
       Promise.resolve(onSubmit(formData))
         .then((data) => {
           this.setState({ loading: false })
@@ -36,7 +36,7 @@ export default class Form extends React.Component {
   }
 
   isValid = () => {
-    if (this.props.error || this.state.error) {
+    if (this.props.error) {
       return false
     }
     const required = this.props.schema.required || []
