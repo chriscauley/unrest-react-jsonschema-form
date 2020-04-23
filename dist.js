@@ -50,6 +50,9 @@ var noop = function noop(formData) {
 var uiSchema = {
   password: {
     'ui:widget': 'password'
+  },
+  src: {
+    'ui:widget': 'file'
   }
 };
 
@@ -94,13 +97,23 @@ var Form = /*#__PURE__*/function (_React$Component) {
           error: undefined
         });
 
-        Promise.resolve(onSubmit(formData)).then(function (data) {
+        Promise.resolve(onSubmit(formData))["catch"](function (error) {
+          return {
+            error: error
+          };
+        }).then(function () {
+          var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+          var error = data.error;
+
           _this.setState({
-            loading: false
+            loading: false,
+            error: error
           });
 
-          return onSuccess(data);
-        })["catch"](_this.setError);
+          if (!error) {
+            return onSuccess(data);
+          }
+        });
       });
     });
 

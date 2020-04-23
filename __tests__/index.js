@@ -141,6 +141,7 @@ test('Form.state.loading blocks submit', (done) => {
       fireEvent.click(component.getByText('Submit'))
       resolveCurrent(1)
     })
+    .then(() => {})
     .then(() => {
       // since finish was called, we can submit again
       fireEvent.click(component.getByText('Submit'))
@@ -154,4 +155,26 @@ test('Form.props.loading blocks submit', () => {
   const component = renderForm({ onSubmit, loading: true })
   fireEvent.click(component.getByText('Submit'))
   expect(onSubmit).toHaveBeenCalledTimes(0)
+})
+
+test('Form.props.error makes form inValid', () => {
+  const error = 'An unknown error has occurred.'
+  const component = renderForm({ error })
+  expect(component.getByText(error).className).toBe('alert alert-danger')
+})
+
+test('Form.props.onSubmit shows an error if one is thrown', (done) => {
+  const error = 'An unknown error has occurred.'
+  const onSubmit = () =>
+    new Promise(() => {
+      throw error
+    })
+  const component = renderForm({ onSubmit })
+  fireEvent.click(component.getByText('Submit'))
+  Promise.resolve()
+    .then(() => {})
+    .then(() => {
+      expect(component.getByText(error).className).toBe('alert alert-danger')
+    })
+  done()
 })

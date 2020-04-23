@@ -6,6 +6,7 @@ import css from '@unrest/css'
 const noop = (formData) => formData
 const uiSchema = {
   password: { 'ui:widget': 'password' },
+  src: { 'ui:widget': 'file' },
 }
 
 export default class Form extends React.Component {
@@ -19,11 +20,14 @@ export default class Form extends React.Component {
       prepData(formData) // mutates formData or throws error
       this.setState({ loading: true, error: undefined })
       Promise.resolve(onSubmit(formData))
-        .then((data) => {
-          this.setState({ loading: false })
-          return onSuccess(data)
+        .catch((error) => ({ error }))
+        .then((data = {}) => {
+          const { error } = data
+          this.setState({ loading: false, error })
+          if (!error) {
+            return onSuccess(data)
+          }
         })
-        .catch(this.setError)
     })
   }
 
