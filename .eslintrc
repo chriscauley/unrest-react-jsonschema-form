@@ -47,6 +47,6 @@
   "globals": {
     "document": false,
     "window": false,
-    "__DEV__": true,
+    "global": true,
   }
 }

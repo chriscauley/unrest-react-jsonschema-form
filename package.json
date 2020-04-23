@@ -2,12 +2,12 @@
   "name": "@unrest/react-jsonschema-form",
   "description": "A wrapper around react-jsonschema-form for personal projects",
   "version": "0.0.1",
-  "main": "dist.js",
+  "main": "dist/index.js",
   "repository": "http://github.com/chriscauley/unrest-react-jsonschema-form.git",
   "author": "chriscauley",
   "license": "MIT",
   "scripts": {
-    "build": "babel src/index.js -o dist.js",
+    "build": "babel src -d dist",
     "lint": "yarn eslint __tests__/ src/",
     "test": "yarn jest",
     "develop": "yarn parcel docs/index.html"

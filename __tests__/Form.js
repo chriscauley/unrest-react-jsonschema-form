@@ -1,33 +1,10 @@
 import React from 'react'
 import { render, fireEvent } from '@testing-library/react'
 
+import { supressError, supressReactWarning, getSchema } from './utils'
 import Form from '../src'
 
-const og_warn = console.warn
-const og_error = console.error
-const supressError = (expected) => {
-  console.error = jest.fn((actual) => expected && expect(actual).toBe(expected))
-}
-beforeAll(() => {
-  console.warn = (warning) => {
-    if (!`${warning}`.includes('componentWillReceiveProps has been renamed')) {
-      og_warn(warning)
-    }
-  }
-})
-
-afterAll(() => {
-  console.error = og_error
-  console.warn = og_warn
-})
-
-const getSchema = (schema) => ({
-  type: 'object',
-  properties: {
-    name: { type: 'string' },
-  },
-  ...schema,
-})
+supressReactWarning()
 
 const renderForm = (args = {}) => {
   const { schema, ...props } = args
@@ -170,6 +147,7 @@ test('Form.props.onSubmit shows an error if one is thrown', (done) => {
       throw error
     })
   const component = renderForm({ onSubmit })
+  supressError(error)
   fireEvent.click(component.getByText('Submit'))
   Promise.resolve()
     .then(() => {})
