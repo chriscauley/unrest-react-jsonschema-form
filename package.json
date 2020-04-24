@@ -15,7 +15,7 @@
   "peerDependencies": {
     "classnames": "^2.2.6",
     "react": ">=15",
-    "react-jsonschema-form": "^1.8.1"
+    "react-jsonschema-form": "^2.0.0-alpha.1"
   },
   "dependencies": {
     "@unrest/css": "chriscauley/unrest-css"
@@ -40,7 +40,7 @@
     "prettier": "^2.0.4",
     "react": ">=15",
     "react-dom": "^16.13.1",
-    "react-jsonschema-form": "^1.8.1",
+    "react-jsonschema-form": "^2.0.0-alpha.1",
     "react-test-renderer": "^16.13.1"
   }
 }

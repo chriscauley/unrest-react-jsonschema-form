@@ -14,7 +14,7 @@ const renderForm = (args = {}) => {
 test('Form noop', () => {
   const component = renderForm()
   fireEvent.click(component.getByText('Submit'))
-  expect(component.queryByText('.name is a required property')).toBeFalsy()
+  expect(component.queryByText('is a required property')).toBeFalsy()
   expect(component.queryByText('Cancel')).toBeFalsy()
   fireEvent.change(component.getByLabelText('name'), {
     target: { value: 'james' },
@@ -25,7 +25,7 @@ test('Form.props.required displays an error when submitted', () => {
   const component2 = renderForm({ schema: { required: ['name'] } })
   supressError('Form validation failed')
   fireEvent.click(component2.getByText('Submit'))
-  component2.getByText('.name is a required property')
+  component2.getByText('is a required property')
 })
 
 test('Form.props.cancel attaches to cancel button', () => {
