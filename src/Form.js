@@ -2,6 +2,7 @@ import React from 'react'
 import RJSForm from 'react-jsonschema-form'
 import classnames from 'classnames'
 import css from '@unrest/css'
+import config from './config'
 
 const noop = (formData) => formData
 const uiSchema = {
@@ -18,14 +19,15 @@ export default class Form extends React.Component {
     const { prepData = noop, onSubmit = noop, onSuccess = noop } = this.props
     this.catchError(() => {
       prepData(formData) // mutates formData or throws error
-      this.setState({ loading: true, error: undefined })
+      this.setState({ loading: true, error: undefined, errors: undefined })
       Promise.resolve(onSubmit(formData))
         .catch((error) => ({ error }))
         .then((data = {}) => {
-          const { error } = data
-          this.setState({ loading: false, error })
-          if (error) {
-            console.error(error)
+          const { error, errors } = data
+          const extraErrors = config.processServerErrors(errors)
+          this.setState({ loading: false, error, extraErrors })
+          if (error || extraErrors) {
+            console.error(error, extraErrors)
           } else {
             return onSuccess(data)
           }
@@ -94,6 +96,8 @@ export default class Form extends React.Component {
           onSubmit={this.onSubmit}
           onChange={this.onChange}
           schema={schema}
+          extraErrors={this.state.extraErrors}
+          showErrorList={false}
           uiSchema={{
             ...uiSchema,
             ...this.props.uiSchema,

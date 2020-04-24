@@ -13,6 +13,8 @@ var _classnames = _interopRequireDefault(require("classnames"));
 
 var _css = _interopRequireDefault(require("@unrest/css"));
 
+var _config = _interopRequireDefault(require("./config"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -94,7 +96,8 @@ var Form = /*#__PURE__*/function (_React$Component) {
 
         _this.setState({
           loading: true,
-          error: undefined
+          error: undefined,
+          errors: undefined
         });
 
         Promise.resolve(onSubmit(formData))["catch"](function (error) {
@@ -103,15 +106,19 @@ var Form = /*#__PURE__*/function (_React$Component) {
           };
         }).then(function () {
           var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-          var error = data.error;
+          var error = data.error,
+              errors = data.errors;
+
+          var extraErrors = _config["default"].processServerErrors(errors);
 
           _this.setState({
             loading: false,
-            error: error
+            error: error,
+            extraErrors: extraErrors
           });
 
-          if (error) {
-            console.error(error);
+          if (error || extraErrors) {
+            console.error(error, extraErrors);
           } else {
             return onSuccess(data);
           }
@@ -204,6 +211,8 @@ var Form = /*#__PURE__*/function (_React$Component) {
         onSubmit: this.onSubmit,
         onChange: this.onChange,
         schema: schema,
+        extraErrors: this.state.extraErrors,
+        showErrorList: false,
         uiSchema: _objectSpread({}, uiSchema, {}, this.props.uiSchema)
       }, children, error && /*#__PURE__*/_react["default"].createElement("div", {
         className: _css["default"].alert.danger()
