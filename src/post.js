@@ -1,15 +1,18 @@
 import config from './config'
 
-export const handleError = error => {
+export const handleError = (error) => {
   // Analyzes many possible exeptions and return { error: "Something the user can read" }
-  if (typeof error === "string") {
+  if (typeof error === 'string') {
     return { error }
   }
 
-  if (error.name === "TypeError" && error.message === "Failed to fetch") {
-    return {error: "Unable to connect to server. Please check your internet connection and try again."}
+  if (error.name === 'TypeError' && error.message === 'Failed to fetch') {
+    return {
+      error:
+        'Unable to connect to server. Please check your internet connection and try again.',
+    }
   }
-  return {error: error.message}
+  return { error: error.message }
 }
 
 const resolve = (response) => {

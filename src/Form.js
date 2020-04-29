@@ -10,6 +10,20 @@ const uiSchema = {
   src: { 'ui:widget': 'file' },
 }
 
+const extractUiSchema = (schema) => {
+  const uiSchema = {}
+  Object.entries(schema.properties).forEach(([key, value]) => {
+    const { __widget } = value
+    if (__widget === 'HiddenInput') {
+      uiSchema[key] = { 'ui:widget': 'hidden' }
+    }
+    if (__widget === 'PasswordInput') {
+      uiSchema[key] = { 'ui:widget': 'password' }
+    }
+  })
+  return uiSchema
+}
+
 export default class Form extends React.Component {
   state = {}
   onSubmit = ({ formData }) => {
@@ -100,6 +114,7 @@ export default class Form extends React.Component {
           showErrorList={false}
           uiSchema={{
             ...uiSchema,
+            ...extractUiSchema(schema),
             ...this.props.uiSchema,
           }}
         >
