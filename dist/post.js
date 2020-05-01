@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = exports.handleError = void 0;
+exports["default"] = exports.afterFetch = exports.handleError = void 0;
 
 var _config = _interopRequireDefault(require("./config"));
 
@@ -30,7 +30,7 @@ var handleError = function handleError(error) {
 
 exports.handleError = handleError;
 
-var resolve = function resolve(response) {
+var afterFetch = function afterFetch(response) {
   var contentType = response.headers.get('content-type');
 
   if (!contentType || !contentType.includes('application/json')) {
@@ -45,12 +45,14 @@ var resolve = function resolve(response) {
   return response.json()["catch"](handleError);
 };
 
+exports.afterFetch = afterFetch;
+
 var _default = function _default(url, data) {
   return fetch(url, {
     body: JSON.stringify(data),
     method: 'POST',
     headers: _config["default"].getHeaders()
-  }).then(resolve, handleError);
+  }).then(afterFetch, handleError);
 };
 
 exports["default"] = _default;

@@ -15,7 +15,7 @@ export const handleError = (error) => {
   return { error: error.message }
 }
 
-const resolve = (response) => {
+export const afterFetch = (response) => {
   const contentType = response.headers.get('content-type')
   if (!contentType || !contentType.includes('application/json')) {
     // all responses from the server should be an ajax
@@ -31,5 +31,5 @@ export default (url, data) => {
     body: JSON.stringify(data),
     method: 'POST',
     headers: config.getHeaders(),
-  }).then(resolve, handleError)
+  }).then(afterFetch, handleError)
 }
