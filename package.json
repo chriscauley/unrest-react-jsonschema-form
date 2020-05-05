@@ -1,8 +1,8 @@
 {
   "name": "@unrest/react-jsonschema-form",
   "description": "A wrapper around react-jsonschema-form for personal projects",
-  "version": "0.0.1",
-  "main": "dist/index.js",
+  "version": "0.0.2",
+  "main": "dist",
   "repository": "http://github.com/chriscauley/unrest-react-jsonschema-form.git",
   "author": "chriscauley",
   "license": "MIT",
@@ -13,13 +13,12 @@
     "develop": "yarn parcel docs/index.html"
   },
   "peerDependencies": {
+    "@unrest/css": "chriscauley/unrest-css",
     "classnames": "^2.2.6",
     "react": ">=15",
     "react-jsonschema-form": "^2.0.0-alpha.1"
   },
-  "dependencies": {
-    "@unrest/css": "chriscauley/unrest-css"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",

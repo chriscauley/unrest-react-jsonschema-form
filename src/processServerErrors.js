@@ -1,11 +1,6 @@
-/* istanbul ignore next */
-export const getCSRF = (cookie) => {
-  cookie = cookie || document.cookie
-  const match = cookie.match(/csrftoken=([^;]+)/)
-  return match && match[1]
-}
+// for now this is copied from react-core. Might want to make that a dependency eventually
 
-export const processServerErrors = (errors = {}) => {
+export default (errors = {}) => {
   const extraErrors = {}
   let has_error
   Object.entries(errors).forEach(([fieldname, error_list]) => {
@@ -25,15 +20,3 @@ export const processServerErrors = (errors = {}) => {
   }
   return has_error && extraErrors
 }
-
-const config = {
-  getHeaders: () => ({
-    'content-type': 'application/json',
-    'X-CSRFToken': config.getCSRF(),
-  }),
-  getCSRF,
-  processServerErrors,
-  unknown_error: 'An unknown error has occurred. Please try again.',
-}
-
-export default config

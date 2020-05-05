@@ -1300,10 +1300,6 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@unrest/css@chriscauley/unrest-css":
-  version "0.0.1"
-  resolved "https://codeload.github.com/chriscauley/unrest-css/tar.gz/e8c088e2e7769b06a6011e02d40aa40977685724"
-
 abab@^2.0.0:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.3.tgz#623e2075e02eb2d3f2475e49f99c91846467907a"
