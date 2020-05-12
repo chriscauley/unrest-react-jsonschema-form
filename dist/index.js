@@ -203,13 +203,19 @@ var Form = /*#__PURE__*/function (_React$Component) {
 
     _defineProperty(_assertThisInitialized(_this), "onChange", function (_ref4) {
       var formData = _ref4.formData;
-      var _this$props$onChange = _this.props.onChange,
-          onChange = _this$props$onChange === void 0 ? noop : _this$props$onChange;
+      var _this$props2 = _this.props,
+          _this$props2$onChange = _this$props2.onChange,
+          onChange = _this$props2$onChange === void 0 ? noop : _this$props2$onChange,
+          autosubmit = _this$props2.autosubmit;
 
       _this.catchError(function () {
         onChange(formData); // mutates formData or throws error
 
         _this.setState({
+          formData: formData
+        });
+
+        autosubmit && _this.onSubmit({
           formData: formData
         });
       });
@@ -221,19 +227,19 @@ var Form = /*#__PURE__*/function (_React$Component) {
   _createClass(Form, [{
     key: "render",
     value: function render() {
-      var _this$props2 = this.props,
-          after = _this$props2.after,
-          cancel = _this$props2.cancel,
-          _this$props2$cancelTe = _this$props2.cancelText,
-          cancelText = _this$props2$cancelTe === void 0 ? 'Cancel' : _this$props2$cancelTe,
-          children = _this$props2.children,
-          customButton = _this$props2.customButton,
-          className = _this$props2.className,
-          schema = _this$props2.schema,
-          _this$props2$submitTe = _this$props2.submitText,
-          submitText = _this$props2$submitTe === void 0 ? 'Submit' : _this$props2$submitTe,
-          success = _this$props2.success,
-          title = _this$props2.title;
+      var _this$props3 = this.props,
+          after = _this$props3.after,
+          cancel = _this$props3.cancel,
+          _this$props3$cancelTe = _this$props3.cancelText,
+          cancelText = _this$props3$cancelTe === void 0 ? 'Cancel' : _this$props3$cancelTe,
+          children = _this$props3.children,
+          customButton = _this$props3.customButton,
+          className = _this$props3.className,
+          schema = _this$props3.schema,
+          _this$props3$submitTe = _this$props3.submitText,
+          submitText = _this$props3$submitTe === void 0 ? 'Submit' : _this$props3$submitTe,
+          success = _this$props3.success,
+          title = _this$props3.title;
       var error = this.state.error || this.props.error;
       return /*#__PURE__*/_react["default"].createElement("div", {
         className: (0, _classnames["default"])('rjsf', className, {

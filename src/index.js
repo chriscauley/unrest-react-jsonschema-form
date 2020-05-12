@@ -78,10 +78,11 @@ export default class Form extends React.Component {
   }
 
   onChange = ({ formData }) => {
-    const { onChange = noop } = this.props
+    const { onChange = noop, autosubmit } = this.props
     this.catchError(() => {
       onChange(formData) // mutates formData or throws error
       this.setState({ formData })
+      autosubmit && this.onSubmit({ formData })
     })
   }
 
