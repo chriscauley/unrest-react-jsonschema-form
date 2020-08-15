@@ -228,6 +228,7 @@ var Form = /*#__PURE__*/function (_React$Component) {
   _createClass(Form, [{
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
+      // react throws a warning when onSubmit tries to update the state if component was unmounted
       this.__mounted = false;
     }
   }, {
@@ -247,7 +248,6 @@ var Form = /*#__PURE__*/function (_React$Component) {
           success = _this$props3.success,
           title = _this$props3.title;
       var error = this.state.error || this.props.error;
-      console.log(this.__mounted);
       return /*#__PURE__*/_react["default"].createElement("div", {
         className: (0, _classnames["default"])('rjsf', className, {
           loading: this.isLoading()

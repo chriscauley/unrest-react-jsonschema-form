@@ -77,9 +77,7 @@ export default class Form extends React.Component {
 
   getFormData = () => {
     // formData is dictated by props for controlled form or state (via rjsf) for non-controlled form
-    return (
-      this.props.formData || this.state.formData || this.props.initial || {}
-    )
+    return this.props.formData || this.state.formData || this.props.initial || {}
   }
 
   onChange = ({ formData }) => {
@@ -107,9 +105,7 @@ export default class Form extends React.Component {
     const error = this.state.error || this.props.error
 
     return (
-      <div
-        className={classnames('rjsf', className, { loading: this.isLoading() })}
-      >
+      <div className={classnames('rjsf', className, { loading: this.isLoading() })}>
         {title && <div className={css.h2()}>{title}</div>}
         <RJSForm
           formData={this.getFormData()}
@@ -125,9 +121,7 @@ export default class Form extends React.Component {
           }}
         >
           {children}
-          {error && (
-            <div className={css.alert.danger()}>{error.message || error}</div>
-          )}
+          {error && <div className={css.alert.danger()}>{error.message || error}</div>}
           {success && <div className={css.alert.success()}>{success}</div>}
           {!customButton && (
             <div className="flex justify-end mb-8">

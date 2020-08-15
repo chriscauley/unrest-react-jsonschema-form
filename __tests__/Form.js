@@ -106,9 +106,7 @@ test('Form.state.loading blocks submit', (done) => {
   // first submit calls onSubmit and sets button state to loading
   const component = renderForm({ onSubmit })
   fireEvent.click(component.getByText('Submit'))
-  expect(component.getByText('Submit').className).toBe(
-    'btn btn-primary loading',
-  )
+  expect(component.getByText('Submit').className).toBe('btn btn-primary loading')
   expect(submitCount).toBe(1)
 
   // need a new promise for every submit call

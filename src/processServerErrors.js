@@ -7,9 +7,7 @@ export default (errors = {}) => {
     if (!Array.isArray(error_list)) {
       error_list = [error_list]
     }
-    const results = error_list.map((error) =>
-      error.message ? error.message : error,
-    )
+    const results = error_list.map((error) => (error.message ? error.message : error))
     if (results.length) {
       has_error = true
       extraErrors[fieldname] = { __errors: results }

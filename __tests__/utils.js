@@ -8,9 +8,7 @@ export const supressError = (expected) => {
 export const supressReactWarning = () => {
   beforeAll(() => {
     console.warn = (warning) => {
-      if (
-        !`${warning}`.includes('componentWillReceiveProps has been renamed')
-      ) {
+      if (!`${warning}`.includes('componentWillReceiveProps has been renamed')) {
         og_warn(warning)
       }
     }
