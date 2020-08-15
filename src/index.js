@@ -25,7 +25,12 @@ const extractUiSchema = (schema) => {
 }
 
 export default class Form extends React.Component {
+  __mounted = true
   state = {}
+  componentWillUnmount() {
+    // react throws a warning when onSubmit tries to update the state if component was unmounted
+    this.__mounted = false
+  }
   onSubmit = ({ formData }) => {
     if (this.isLoading()) {
       return
@@ -39,7 +44,7 @@ export default class Form extends React.Component {
         .then((data = {}) => {
           const { error, errors } = data
           const extraErrors = processServerErrors(errors)
-          this.setState({ loading: false, error, extraErrors })
+          this.__mounted && this.setState({ loading: false, error, extraErrors })
           if (error || extraErrors) {
             console.error(error, extraErrors)
           } else {

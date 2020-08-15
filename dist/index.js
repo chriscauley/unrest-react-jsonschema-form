@@ -110,6 +110,8 @@ var Form = /*#__PURE__*/function (_React$Component) {
 
     _this = _super.call.apply(_super, [this].concat(args));
 
+    _defineProperty(_assertThisInitialized(_this), "__mounted", true);
+
     _defineProperty(_assertThisInitialized(_this), "state", {});
 
     _defineProperty(_assertThisInitialized(_this), "onSubmit", function (_ref3) {
@@ -145,8 +147,7 @@ var Form = /*#__PURE__*/function (_React$Component) {
           var error = data.error,
               errors = data.errors;
           var extraErrors = (0, _processServerErrors["default"])(errors);
-
-          _this.setState({
+          _this.__mounted && _this.setState({
             loading: false,
             error: error,
             extraErrors: extraErrors
@@ -225,6 +226,11 @@ var Form = /*#__PURE__*/function (_React$Component) {
   }
 
   _createClass(Form, [{
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.__mounted = false;
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this$props3 = this.props,
@@ -241,6 +247,7 @@ var Form = /*#__PURE__*/function (_React$Component) {
           success = _this$props3.success,
           title = _this$props3.title;
       var error = this.state.error || this.props.error;
+      console.log(this.__mounted);
       return /*#__PURE__*/_react["default"].createElement("div", {
         className: (0, _classnames["default"])('rjsf', className, {
           loading: this.isLoading()
