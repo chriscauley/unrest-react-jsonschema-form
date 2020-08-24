@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports["default"] = exports.uiSchema = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
@@ -69,6 +69,7 @@ var uiSchema = {
     'ui:widget': 'file'
   }
 };
+exports.uiSchema = uiSchema;
 
 var extractUiSchema = function extractUiSchema(schema) {
   var uiSchema = {};
@@ -234,6 +235,7 @@ var Form = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      console.log(uiSchema);
       var _this$props3 = this.props,
           after = _this$props3.after,
           cancel = _this$props3.cancel,

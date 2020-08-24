@@ -5,7 +5,7 @@ import css from '@unrest/css'
 import processServerErrors from './processServerErrors'
 
 const noop = (formData) => formData
-const uiSchema = {
+export const uiSchema = {
   password: { 'ui:widget': 'password' },
   src: { 'ui:widget': 'file' },
 }
