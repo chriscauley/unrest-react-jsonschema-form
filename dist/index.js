@@ -235,7 +235,6 @@ var Form = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      console.log(uiSchema);
       var _this$props3 = this.props,
           after = _this$props3.after,
           cancel = _this$props3.cancel,

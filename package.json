@@ -1,7 +1,7 @@
 {
   "name": "@unrest/react-jsonschema-form",
   "description": "A wrapper around react-jsonschema-form for personal projects",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "dist",
   "repository": "http://github.com/chriscauley/unrest-react-jsonschema-form.git",
   "author": "chriscauley",
