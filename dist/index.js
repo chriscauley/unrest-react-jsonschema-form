@@ -131,7 +131,11 @@ var Form = /*#__PURE__*/function (_React$Component) {
           onSuccess = _this$props$onSuccess === void 0 ? noop : _this$props$onSuccess;
 
       _this.catchError(function () {
-        prepData(formData); // mutates formData or throws error
+        formData = prepData(formData); // returns new formData or throws an error
+
+        if (!formData) {
+          throw "Deprecation Error: RJSF.prepData needs to return data object";
+        }
 
         _this.setState({
           loading: true,

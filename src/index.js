@@ -37,7 +37,10 @@ export default class Form extends React.Component {
     }
     const { prepData = noop, onSubmit = noop, onSuccess = noop } = this.props
     this.catchError(() => {
-      prepData(formData) // mutates formData or throws error
+      formData = prepData(formData) // returns new formData or throws an error
+      if (!formData) {
+        throw "Deprecation Error: RJSF.prepData needs to return data object"
+      }
       this.setState({ loading: true, error: undefined, errors: undefined })
       Promise.resolve(onSubmit(formData))
         .catch((error) => ({ error }))
