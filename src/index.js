@@ -39,7 +39,7 @@ export default class Form extends React.Component {
     this.catchError(() => {
       formData = prepData(formData) // returns new formData or throws an error
       if (!formData) {
-        throw "Deprecation Error: RJSF.prepData needs to return data object"
+        throw 'Deprecation Error: RJSF.prepData needs to return data object'
       }
       this.setState({ loading: true, error: undefined, errors: undefined })
       Promise.resolve(onSubmit(formData))
@@ -88,7 +88,12 @@ export default class Form extends React.Component {
     this.catchError(() => {
       onChange(formData) // mutates formData or throws error
       this.setState({ formData })
-      autosubmit && this.onSubmit({ formData })
+
+      // RJSF triggers onChange when form mounts, we don't want to run submit then.
+      if (autosubmit && this._was_mounted) {
+        this.onSubmit({ formData })
+      }
+      this._was_mounted = true
     })
   }
 

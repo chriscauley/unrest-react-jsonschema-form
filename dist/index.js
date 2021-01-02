@@ -134,7 +134,7 @@ var Form = /*#__PURE__*/function (_React$Component) {
         formData = prepData(formData); // returns new formData or throws an error
 
         if (!formData) {
-          throw "Deprecation Error: RJSF.prepData needs to return data object";
+          throw 'Deprecation Error: RJSF.prepData needs to return data object';
         }
 
         _this.setState({
@@ -219,11 +219,16 @@ var Form = /*#__PURE__*/function (_React$Component) {
 
         _this.setState({
           formData: formData
-        });
+        }); // RJSF triggers onChange when form mounts, we don't want to run submit then.
 
-        autosubmit && _this.onSubmit({
-          formData: formData
-        });
+
+        if (autosubmit && _this._was_mounted) {
+          _this.onSubmit({
+            formData: formData
+          });
+        }
+
+        _this._was_mounted = true;
       });
     });
 
