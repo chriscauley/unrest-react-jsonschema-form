@@ -25,8 +25,10 @@ const extractUiSchema = (schema) => {
 }
 
 export default class Form extends React.Component {
-  __mounted = true
   state = {}
+  componentDidMount() {
+    this.__mounted = true
+  }
   componentWillUnmount() {
     // react throws a warning when onSubmit tries to update the state if component was unmounted
     this.__mounted = false
@@ -90,10 +92,9 @@ export default class Form extends React.Component {
       this.setState({ formData })
 
       // RJSF triggers onChange when form mounts, we don't want to run submit then.
-      if (autosubmit && this._was_mounted) {
+      if (autosubmit && this.__mounted) {
         this.onSubmit({ formData })
       }
-      this._was_mounted = true
     })
   }
 

@@ -111,8 +111,6 @@ var Form = /*#__PURE__*/function (_React$Component) {
 
     _this = _super.call.apply(_super, [this].concat(args));
 
-    _defineProperty(_assertThisInitialized(_this), "__mounted", true);
-
     _defineProperty(_assertThisInitialized(_this), "state", {});
 
     _defineProperty(_assertThisInitialized(_this), "onSubmit", function (_ref3) {
@@ -222,13 +220,11 @@ var Form = /*#__PURE__*/function (_React$Component) {
         }); // RJSF triggers onChange when form mounts, we don't want to run submit then.
 
 
-        if (autosubmit && _this._was_mounted) {
+        if (autosubmit && _this.__mounted) {
           _this.onSubmit({
             formData: formData
           });
         }
-
-        _this._was_mounted = true;
       });
     });
 
@@ -236,6 +232,11 @@ var Form = /*#__PURE__*/function (_React$Component) {
   }
 
   _createClass(Form, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.__mounted = true;
+    }
+  }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       // react throws a warning when onSubmit tries to update the state if component was unmounted
